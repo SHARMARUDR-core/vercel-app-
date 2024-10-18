@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-
+const port = process.env.PORT || 3000
 app.get("/", (req, res) => res.send("Express on Vercel"));
 app.get('/home' , (req , res) => res.send('this is home'))
 app.get('/users' , (req ,res) => {
@@ -15,13 +15,13 @@ app.get('/users' , (req ,res) => {
         `<div>
             ${
                 user.map((ele) => {
-                    return <h1> ${ele.name} </h1>
+                    return `<h1> ${ele.name} </h1>`
                 }) 
             }
         </div>`
     )
 })
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.listen(port, () => console.log("Server ready on port 3000."));
 
 module.exports = app;
