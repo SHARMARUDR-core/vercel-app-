@@ -10,6 +10,13 @@
       {
         "src": "/(.*)",
         "dest": "victara-db-items.js"
+      } , 
+      {
+        "functions": {
+          "api/*.js": {
+            "maxDuration": 30
+          }
+        }
       }
     ]
   }
