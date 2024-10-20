@@ -5,11 +5,80 @@
     <title>Document</title>
 </head>
 <body>
-
+    <h1>hello rudr</h1>
+    <form id="form" action="/addUser" method="post">
+        <input type="text" name = 'firstName' placeholder="firstName" value="firstName" class="input">
+        <input type="text" name ='lastName' placeholder="lastName" value="lastName" class="input">
+        <input type="text" name = 'email' placeholder="email" value="email" class="input">
+        <input type='text' name ='age' placeholder="age" value="25" class="input">
+        <input type="text" name = 'phoneNumber' placeholder="phoneNumber" value="9818694040" class="input">
+        <button onclick="handleSubmit()">submit</button>
+    </form>
+    <button onclick="handlePatchRequest()">updateData</button>
+    <output id="output"></output>
     <script>
-        fetch('https://vercel-app-beta-three.vercel.app/')
-        .then(res => res.json())
+
+        document.getElementById('form').addEventListener('click' , function(e) {
+            e.preventDefault()
+        })
+        const form = document.getElementById('form')
+        function handleSubmit() {
+    const formData = new FormData(form);
+    const data = {};
+    const output = document.getElementById("output");
+    
+    // Clear previous output content
+    output.textContent = '';
+
+    // Iterate over form data and build the object
+    for (const [key, value] of formData.entries()) {
+        output.textContent += `${key}: ${value}\n`;
+        data[key] = value; // Storing key-value pairs properly
+    }
+    
+    console.log(data)
+    // Fetch request to send form data
+    fetch('http://localhost:8080/addUsers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            firstName: data.firstName, 
+            lastName: data.lastName, 
+            email: data.email, 
+            age: data.age, 
+            phoneNumber: data.phoneNumber
+        }), 
+    })
+    .then(res => res.text())
+    .then(e => console.log(e))
+    .catch(err => console.log(err)); // Catching errors properly
+}
+
+function handlePatchRequest()  {
+    fetch("http://localhost:8080/addUsers/", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: "Jane Doe", // Only updating the 'name' field
+      }),
+    })
+      .then((response) => response.json())
+      .then((updatedData) => {
+        console.log("Updated data:", updatedData);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+
+        fetch('http://localhost:8080/users')
+        .then((res) => res.text())
         .then(console.log)
-    </script>
+    </script>    
 </body>
 </html>
