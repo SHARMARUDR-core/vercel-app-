@@ -39,7 +39,7 @@ app.get('/', async (req, res) => {
     res.status(500).json({ message: 'Error fetching data' });
   }
 })
-.post('/', async (req, res) => {
+app.post('/', async (req, res) => {
   try {
     console.log(req.body);
     const { name , price , url , typeOf , description } = req.body;
