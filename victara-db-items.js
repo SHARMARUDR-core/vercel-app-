@@ -28,17 +28,18 @@ const DataSchema = new mongoose.Schema({
   description : String 
 });
 
-const user = mongoose.model('items', DataSchema);
+const user = mongoose.model('order_items', DataSchema);
 
 // API to get all data
 app.get('/', async (req, res) => {
   try {
-    const data = await user.find();
+    const data = await user.find({});
     res.json(data);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching data' });
   }
 })
+
 app.post('/', async (req, res) => {
   try {
     console.log(req.body);
@@ -61,36 +62,7 @@ app.post('/', async (req, res) => {
   }
 })
 
-app.delete('/:name', async (req, res) => {
-  const uri = "mongodb+srv://rudrsharma103:rudrdb@victara-cluster.outgk.mongodb.net/victara-user";
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-    const database = client.db('victara-user');
-    const collection = database.collection('items');
-
-    // Extracting the name from req.params
-    const itemName = req.params.name;
-
-    // Delete the item with the matching name
-    const result = await collection.deleteOne({ name: itemName });
-
-    // Send appropriate response based on deletion result
-    if (result.deletedCount === 1) {
-      res.status(200).json({ message: `Item with name ${itemName} has been deleted.` });
-    } else {
-      res.status(404).json({ message: `No item found with the name ${itemName}.` });
-    }
-  } catch (error) {
-    console.error('Error deleting item:', error);
-    res.status(500).json({ message: 'Internal server error' });
-  } finally {
-    await client.close();
-  }
-});
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
